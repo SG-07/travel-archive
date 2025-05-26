@@ -1,0 +1,26 @@
+{
+  "name": "travel-archive",
+  "version": "1.0.0",
+  "description": "A repository providing structured data on hotels, guest houses, and short-term rentals, including location, amenities, pricing, and reviews to help travelers find the perfect stay.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SG-07/travel-archive.git"
+  },
+  "author": "Satyam Gangwar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SG-07/travel-archive/issues"
+  },
+  "homepage": "https://github.com/SG-07/travel-archive#readme",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.15.0"
+  }
+}

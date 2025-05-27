@@ -6,6 +6,7 @@ const app = express();
 const port = 8080;
 require('dotenv').config(); // Load environment variables
 const listingRoutes = require('./routes/listings');
+const ejsMate = require('ejs-mate');
 
 //middlewavers
 app.set('view engine', 'ejs');
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride('_method'));
 app.use('/listings', listingRoutes);
+app.engine('ejs', ejsMate);
 
 
 //connecting to db

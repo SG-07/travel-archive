@@ -1,0 +1,75 @@
+/* Navbar Style */
+.navbar {
+    height: 5rem;
+    background-color: azure;
+}
+
+.fa-mountain-sun {
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+
+/* Footer Style */
+.f-info-links, 
+.f-info-socails,
+.f-info-brand {
+    width: 100%;
+}
+
+.f-info-socials i {
+    font-size: 1.5rem;
+    margin: 0 1rem; /* Adds space between icons */
+    cursor: pointer; /* Makes them clickable */
+    transition: 0.3s ease-in-out;
+}
+
+.f-info-socials i:hover {
+    color: orange; /* Highlight effect */
+    transform: scale(1.2); /* Slight zoom on hover */
+}
+
+.f-info-brand:hover {
+    color: orange; /* Highlight effect */
+    transform: scale(1.2); /* Slight zoom on hover */
+    transition: 0.3s ease-in-out;
+}
+
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    /* margin-right: 0.5rem; */
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+    color: orange;
+}
+
+.f-info {
+    display: flex;
+    height: 8rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    background-color: azure;
+}
+
+
+/* Card Style */
+.card {
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.card-img-top {
+    border-radius: 1rem;
+    
+}

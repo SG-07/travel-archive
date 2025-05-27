@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const port = 8080;
 require('dotenv').config(); // Load environment variables
-const listingRoutes = require('./routes/listings.js');
+const listingRoutes = require('./routes/listings');
 
 //middlewavers
 app.set('view engine', 'ejs');

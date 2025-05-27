@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel_Archive</title>
+</head>
+<body>
+    <form method="POST" action="/listings/<%= listing._id %>/?_method=PUT">
+        <h3>Edit your Listing</h3>
+        <br>
+        <input name="listing[title]" value="<%= listing.title %>" type="text" required>
+        <br><br>
+        <textarea name="listing[description]" rows="6" cols="50" required><%= listing.description %></textarea>
+        <br><br>
+        <input name="listing[image]" value="<%= listing.image %>" type="text">
+        <br><br>
+        <input name="listing[price]" value="<%= listing.price %>" type="number" required>
+        <br><br>
+        <input name="listing[location]" value="<%= listing.location %>" type="text" required>
+        <br><br>
+        <input name="listing[country]" value="<%= listing.country %>" type="text" required>
+        <br><br>
+        <button>Submit</button>
+
+    </form>
+    
+</body>

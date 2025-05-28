@@ -1,5 +1,24 @@
+.body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 80vh; /* Ensures enough space for footer */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+
 /* Navbar Style */
 .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem; /* Adds padding for better spacing */
     height: 5rem;
     background-color: azure;
 }
@@ -16,7 +35,7 @@
 
 /* Footer Style */
 .f-info-links, 
-.f-info-socails,
+.f-info-socials,  /* Fixed typo */
 .f-info-brand {
     width: 100%;
 }
@@ -70,6 +89,38 @@
 }
 
 .card-img-top {
-    border-radius: 1rem;
-    
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+/* .car-text p {
+  font-family: 
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+} */
+
+.listing-link {
+    text-decoration: none;
+}
+
+/* Card Effects */
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.4;
+    background-color: white;
+}
+
+
+/* Show Image */
+.show-img {
+    height: 30vh;
 }

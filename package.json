@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/SG-07/travel-archive#readme",
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",

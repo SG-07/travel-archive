@@ -19,9 +19,19 @@ app.engine('ejs', ejsMate);
 
 
 //connecting to db
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB and using database:", mongoose.connection.name))
-  .catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // ✅ Allows MongoDB 30 sec to respond before timing out
+    socketTimeoutMS: 45000, // ✅ Ensures longer wait time before closing connection
+})
+  .then(() => {
+      console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
+  })
+  .catch(err => {
+      console.error("MongoDB connection error:", err);
+      process.exit(1); // ✅ Exits process on critical failure
+  });
 
 
 

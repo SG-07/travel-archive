@@ -3,7 +3,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 require('dotenv').config(); // Load environment variables
 const listingRoutes = require('./routes/listings');
 const ejsMate = require('ejs-mate');
@@ -42,9 +42,8 @@ process.on('SIGINT', async () => {
 
 app.get("/", (req, res)=> {
     console.log("Server working fine");
-    res.send("Server working fine");
+    res.redirect('listings/allListings');
 });
-
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);

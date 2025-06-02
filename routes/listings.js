@@ -1,114 +1,77 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Listing = require('../models/listing.js');
+const wrapAsync = require('../utils/wrapAsync.js');
 
-
-//testing
-// router.get('/testing', async (req, res) => {
-//     let sampleListing = new Listing({
-//         title: 'Grand Paradise',
-//         description: 'Sea facing',
-//         price: 5000,
-//         location: 'wuhan',
-//         country: 'China'
-//     });
-//     await sampleListing.save();
-//     console.log('saved in db');
-//     res.send("Test working well");
-// });
-
-//Index Route
-router.get('/allListings', async (req, res) => {
-    allListings = await Listing.find({});
+// ✅ Index Route - Fetch all listings
+router.get('/allListings', wrapAsync(async (req, res) => {
+    const allListings = await Listing.find({});
     console.log(allListings);
     res.render('listings/index.ejs', { allListings });
-});
+}));
 
-//New Route
-router.get('/new', async(req, res) => {
+// ✅ New Route - Render form to create a new listing
+router.get('/new', wrapAsync(async (req, res) => {
     res.render('listings/new.ejs');
-});
+}));
 
-//Show Route
-router.get('/:id', async (req, res) => { // 🔹 Ensure there's NO extra `/listings` prefix
-    try {
-        let { id } = req.params;
-        console.log("Received ID:", id);
+// ✅ Show Route - Fetch a single listing by ID
+router.get('/:id', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    console.log("Received ID:", id);
 
-        const listing = await Listing.findById(new mongoose.Types.ObjectId(id));
+    const listing = await Listing.findById(id); // 🔹 Removed unnecessary ObjectId conversion
 
-        if (!listing) {
-            console.log("Listing not found!");
-            return res.status(404).send("Listing not found");
-        }
-
-        console.log("Listing Retrieved:", listing);
-        res.render('listings/show.ejs', { listing });
-    } catch (error) {
-        console.error("Error fetching listing:", error);
-        res.status(500).send("Server error");
+    if (!listing) {
+        console.log("Listing not found!");
+        return res.status(404).send("Listing not found");
     }
-});
 
-//Create Route
-router.post('/', async(req, res) => {
+    console.log("Listing Retrieved:", listing);
+    res.render('listings/show.ejs', { listing });
+}));
+
+// ✅ Create Route - Save a new listing to the database
+router.post('/', wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     console.log(newListing);
-    res.redirect('listings/allListings');
-});
+    res.redirect('/listings/allListings'); // 🔹 Fixed redirect path
+}));
 
-//Edit Route
-router.get('/:id/edit', async(req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(new mongoose.Types.ObjectId(id));
-    res.render('listings/edit.ejs', { listing });
-});
-
-//Update Route
-router.put('/:id', async(req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findByIdAndUpdate(new mongoose.Types.ObjectId(id), { ...req.body.listing }, { new:true });
-    res.redirect(`/listings/${ id }`);
-});
-
-//Delete Route
-router.delete('/:id', async(req, res) => {
-    let { id } = req.params;
-    let deleteListing = await Listing.findByIdAndDelete(new mongoose.Types.ObjectId(id));
-    console.log(deleteListing);
-    res.redirect('allListings');
-});
-
-
-// 🔍 Debugging Logs
-router.get('/listings/:id', async (req, res) => {
-    console.log(`Requested URL: /listings/${req.params.id}`);
-
-    try {
-        let { id } = req.params;
-        console.log("Extracted ID:", id);
-
-        // Convert id to ObjectId explicitly
-        const listing = await Listing.findById(new mongoose.Types.ObjectId(id));
-
-        if (!listing) {
-            console.log("Listing not found!");
-            return res.status(404).send("Listing not found");
-        }
-
-        console.log("Listing Retrieved:", listing);
-        res.render('listings/show.ejs', { listing });
-    } catch (error) {
-        console.error("Error fetching listing:", error);
-        res.status(500).send("Server error");
+// ✅ Edit Route - Render edit form for a listing
+router.get('/:id/edit', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
+    if (!listing) {
+        return res.status(404).send("Listing not found");
     }
-});
+    res.render('listings/edit.ejs', { listing });
+}));
 
+// ✅ Update Route - Update a listing in the database
+router.put('/:id', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+
+    if (!listing) {
+        return res.status(404).send("Listing not found");
+    }
+
+    res.redirect(`/listings/${id}`);
+}));
+
+// ✅ Delete Route - Remove a listing from the database
+router.delete('/:id', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const deletedListing = await Listing.findByIdAndDelete(id);
+    
+    if (!deletedListing) {
+        return res.status(404).send("Listing not found");
+    }
+
+    console.log(`Listing ${id} deleted`);
+    res.redirect('/listings/allListings'); // 🔹 Fixed redirect path
+}));
 
 module.exports = router;
-
-
-
-

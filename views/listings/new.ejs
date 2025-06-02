@@ -1,6 +1,6 @@
 <% layout('/layout/boilerplate') %>
     <br><br>
-    <form method="POST" action="/listings">
+    <form method="POST" action="/listings" novalidate class="needs-validation">
         <div class="row">
             <div class="col-8 offset-2">
         <h3>Create a New Listing</h3>
@@ -8,10 +8,15 @@
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input name="listing[title]" class="form-control" placeholder="Enter your place name" type="text" required>
+            <div class="valid-feedback">Looks Good</div>
+            <div class="invalid-feedback">Provide Proper Title</div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" placeholder="Enter your place details" rows="4" cols="25" required></textarea>
+            <textarea name="listing[description]" class="form-control" placeholder="Enter your place details" 
+            rows="4" cols="25" required></textarea>
+            <div class="valid-feedback">Looks Good</div>
+            <div class="invalid-feedback">Provide short Description</div>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image Link</label>
@@ -21,15 +26,18 @@
             <div class="mb-3 col-md-4">
                 <label for="price" class="form-label">Enter Price</label>
                 <input name="listing[price]" type="number" class="form-control" placeholder="Enter your place price/per night" required>
+                <div class="invalid-feedback">Provide Proper Pricing</div>
             </div>
             <div class="mb-3 col-md-8">
                 <label for="location" class="form-label">Enter location</label>
                 <input name="listing[location]" class="form-control" type="text" placeholder="Enter your place location" required>
+                <div class="invalid-feedback">Provide Proper Location Information</div>
             </div>
         </div>
         <div class="mb-3">
             <label for="location" class="form-label">Enter country</label>
             <input name="listing[country]" class="form-control" type="text" placeholder="Enter your place country location" required>
+            <div class="invalid-feedback">Country Name Should be Valid</div>
         </div>
         <button class="btn btn-primary">Submit</button>
         </div>

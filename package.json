@@ -4,7 +4,7 @@
   "description": "A repository providing structured data on hotels, guest houses, and short-term rentals, including location, amenities, pricing, and reviews to help travelers find the perfect stay.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +21,8 @@
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.1.0",
+    "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.15.0"
-  },
-    "scripts": {
-    "start": "node app.js"
   }
 }

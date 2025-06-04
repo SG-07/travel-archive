@@ -9,17 +9,22 @@ const listingRoutes = require('./routes/listings');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/expressError.js');
+const listingSchema = require('./schemas/listingSchema.js')
 
-//middlewavers
+// View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.engine('ejs', ejsMate);
+
+// Middleware setup
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride('_method'));
+app.use(express.json());
+
+
+// Routes
 app.use('/listings', listingRoutes);
-app.engine('ejs', ejsMate);
-
-
 
 //connecting to db
 mongoose.connect(process.env.MONGODB_URI, {
@@ -34,8 +39,6 @@ mongoose.connect(process.env.MONGODB_URI, {
       process.exit(1); // ✅ Exits process on critical failure
   });
 
-
-
 //disconneting from db
 process.on('SIGINT', async () => {
     try {
@@ -48,45 +51,26 @@ process.on('SIGINT', async () => {
     }
 });
 
-
-app.all('*', (req, res, next) => {
-    next(new ExpressError(404, 'Page Not Found!'));
-});
-
-app.use((err, req, res, next) => {
-    let {statusCode= 500, message= 'something went Wrong!'} = err;
-    res.status(statusCode).send(message); 
-});
-
-
+// Root redirect
 app.get("/", (req, res)=> {
     console.log("Server working fine");
     res.redirect('/listings/allListings');
 });
 
-function printRoutes(stack, prefix = '') {
-  stack.forEach(layer => {
-    if (layer.route) {
-      // This layer is a route
-      const methods = Object.keys(layer.route.methods).map(m => m.toUpperCase()).join(', ');
-      console.log(`Registered route: ${methods} ${prefix}${layer.route.path}`);
-    } else if (layer.name === 'router' && layer.handle.stack) {
-      // This layer is a router, recursively print its routes
-      printRoutes(layer.handle.stack, prefix + (layer.regexp.source === '^\\/' ? '' : layer.regexp.source.replace(/\\\//g, '/').replace(/[\^\$\?\:]/g, '')));
-    }
-  });
-}
-
-// After all routes are registered:
-printRoutes(app._router.stack);
+app.use((err, req, res, next) => {
+    console.error("Error Details:", err); // ✅ Debugging log
+    let { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).render('error.ejs', { message, statusCode }); // ✅ Ensure correct variable names
+});
 
 
-// Log all registered routes
-app._router.stack
-  .filter(r => r.route && r.route.path)
-  .forEach(r => {
-    console.log(`Registered route: ${r.route.stack[0].method.toUpperCase()} ${r.route.path}`);
-  });
+
+app.use((err, req, res, next) => {
+    let {statusCode= 500, message= 'something went Wrong!'} = err;
+    res.status(statusCode).render('error.ejs', { message, statusCode });
+    
+});
+
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);

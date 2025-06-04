@@ -2,6 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Listing = require('../models/listing.js');
 const wrapAsync = require('../utils/wrapAsync.js');
+const ExpressError = require('../utils/expressError.js');
+const listingSchema = require('../schemas/listingSchema');
+
+//ListingValidator function
+const listingValidator = (req, res, next) => {
+    let { error } = listingSchema.validate(req.body);
+    if(error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};    
+
 
 // ✅ Index Route - Fetch all listings
 router.get('/allListings', wrapAsync(async (req, res) => {
@@ -32,7 +46,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }));
 
 // ✅ Create Route - Save a new listing to the database
-router.post('/', wrapAsync(async (req, res) => {
+router.post('/', listingValidator, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     console.log(newListing);
@@ -50,8 +64,11 @@ router.get('/:id/edit', wrapAsync(async (req, res) => {
 }));
 
 // ✅ Update Route - Update a listing in the database
-router.put('/:id', wrapAsync(async (req, res) => {
+router.put('/:id', listingValidator, wrapAsync(async (req, res) => {
     const { id } = req.params;
+    if(!req.body.listing) {
+        throw new ExpressError(400, 'Send valid data for listing');
+    }
     const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
 
     if (!listing) {

@@ -1,18 +1,22 @@
 <% layout('/layout/boilerplate') %>
+
 <div class="container">
     <div class="row">
-        
+        <!-- Title -->
         <div class="col-8 offset-3">
             <br>
-            <h3>Listing Details:-</h3>
+            <h3><strong><%= listing.title %></strong></h3>
         </div>    
-        <div class="card col-6 offset-3">
+
+        <!-- Listing Card -->
+        <div class="card listing-card col-6 offset-3">
             <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
             <div class="card-body">
-                <p class="card-text"><strong><%= listing.title %></strong></p>
+                <p class="card-text"></p>
                 <%= listing.description %>
                 <br><br>
-                <strong>Price: </strong> <%= listing.price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) %>
+                <strong>Price: </strong> 
+                <%= listing.price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) %>
                 <br><br>
                 <strong>Location: </strong>
                 <%= listing.location %>
@@ -22,30 +26,77 @@
             </div>
         </div>
 
+        <!-- Buttons -->
         <div class="btn-show offset-3">
-            <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary col-1 offset-2">Edit</a>
-
-            <!-- Delete Button that Triggers Modal -->
-            <button class="btn btn-danger col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary col-2 offset-1">Edit</a>
+            <button class="btn btn-outline-danger col-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
         </div>
-    </div>       
-</div> <!-- ✅ Closing container div properly -->
 
- 
+        <br>
 
-<!-- Bootstrap Modal -->
+        <!-- Review Form -->
+        <div class="col-8 offset-3 mb-3">
+            <hr/>
+            <h4>Leave a Review</h4>
+            <form method="POST" action="/listings/<%= listing._id %>/reviews" class="needs-validation" novalidate>
+                <div class="mb-3 mt-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" 
+                        oninput="document.getElementById('ratingValue').innerText = this.value;">
+                    <p>Selected Rating: <span id="ratingValue">3</span></p>
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea id="comment" name="review[comment]" cols="20" rows="5" class="form-control" required
+                        placeholder="Write your review here."></textarea>
+                    <div class="invalid-feedback">Please write your review</div>
+                </div>
+
+                <br>
+                <button class="btn btn-outline-primary col-3 offset-3">Submit</button>
+            </form>
+        </div>
+
+        <!-- Reviews Section -->
+        <hr/>
+        <% if (listing.reviews && listing.reviews.length > 0) { %>
+            <div class="col-10 offset-1">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2 mb-3">
+                    <% for (review of listing.reviews) { %>
+                        <div class="col mb-3 mt-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Review Details</h5>
+                                    <p class="card-text">Comments: <%= review.comment %></p>
+                                    <p class="card-text"><%= review.rating %> stars</p>
+                                    <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                        <button class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <% } else { %>
+            <p class="offset-3 text-muted">No reviews yet. Be the first to review!</p>
+        <% } %>
+    </div>     
+</div> <!-- ✅ Closing container -->
+
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Confirm Deletion</h5>
-                <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this listing?
             </div>
             <div class="modal-footer">
-                
                 <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
                     <button type="submit" class="btn btn-danger">Yes, Delete</button>
                 </form>

@@ -34,7 +34,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     console.log("Received ID:", id);
 
-    const listing = await Listing.findById(id); // 🔹 Removed unnecessary ObjectId conversion
+    const listing = await Listing.findById(id).populate('reviews'); 
 
     if (!listing) {
         console.log("Listing not found!");
@@ -50,7 +50,7 @@ router.post('/', listingValidator, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     console.log(newListing);
-    res.redirect('/listings/allListings'); // 🔹 Fixed redirect path
+    res.redirect('/listings/allListings'); 
 }));
 
 // ✅ Edit Route - Render edit form for a listing
@@ -88,7 +88,7 @@ router.delete('/:id', wrapAsync(async (req, res) => {
     }
 
     console.log(`Listing ${id} deleted`);
-    res.redirect('/listings/allListings'); // 🔹 Fixed redirect path
+    res.redirect('/listings/allListings'); 
 }));
 
 module.exports = router;

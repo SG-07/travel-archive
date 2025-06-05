@@ -9,7 +9,9 @@ const listingRoutes = require('./routes/listings');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/expressError.js');
-const listingSchema = require('./schemas/listingSchema.js')
+const reviewsRoutes = require('./routes/reviews');
+
+
 
 // View engine setup
 app.set('view engine', 'ejs');
@@ -23,8 +25,10 @@ app.use(methodOverride('_method'));
 app.use(express.json());
 
 
+
 // Routes
 app.use('/listings', listingRoutes);
+app.use('/listings', reviewsRoutes); 
 
 //connecting to db
 mongoose.connect(process.env.MONGODB_URI, {
@@ -58,21 +62,11 @@ app.get("/", (req, res)=> {
 });
 
 app.use((err, req, res, next) => {
-    console.error("Error Details:", err); // ✅ Debugging log
+    console.error("Error Details:", err); 
     let { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).render('error.ejs', { message, statusCode }); // ✅ Ensure correct variable names
+    res.status(statusCode).render('error.ejs', { message, statusCode }); 
 });
-
-
-
-app.use((err, req, res, next) => {
-    let {statusCode= 500, message= 'something went Wrong!'} = err;
-    res.status(statusCode).render('error.ejs', { message, statusCode });
-    
-});
-
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
 });
-

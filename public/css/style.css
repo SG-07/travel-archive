@@ -83,7 +83,7 @@
 
 
 /* Card Style */
-.card {
+.listing-card {
     border: none !important;
     margin-bottom: 2rem;
 }
@@ -98,12 +98,6 @@
     padding: 1rem;
 }
 
-/* .car-text p {
-  font-family: 
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-} */
 
 .listing-link {
     text-decoration: none;

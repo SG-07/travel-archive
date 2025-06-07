@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/SG-07/travel-archive#readme",
   "dependencies": {
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.15.0"

@@ -17,3 +17,15 @@
     }, false)
   })
 })()
+
+//to remove alert after 5 seconds
+document.addEventListener('DOMContentLoaded', () => {
+  const alert = document.querySelector('.alert-dismissible');
+  if (alert) {
+    setTimeout(() => {
+      const alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
+      alertInstance.close();
+    }, 3000); 
+  }
+});
+

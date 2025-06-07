@@ -21,6 +21,7 @@
     padding: 0 2rem; /* Adds padding for better spacing */
     height: 5rem;
     background-color: azure;
+    margin-bottom: 15px;
 }
 
 .fa-mountain-sun {
@@ -117,4 +118,9 @@
 /* Show Image */
 .show-img {
     height: 30vh;
+}
+
+/* Alert */
+.alert {
+  transition: opacity 0.5s ease-out;
 }

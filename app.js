@@ -10,7 +10,19 @@ const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/expressError.js');
 const reviewsRoutes = require('./routes/reviews');
-
+const session = require('express-session');
+const flash = require('connect-flash');
+//seesion params
+const sessionOptions = { 
+    secret: 'kEyisnotToBEESSharEd', 
+    resave: false, 
+    saveUninitialized: true, 
+    cookie: { 
+        expiry: Date.now() + 7*24*60*60*1000, 
+        maxAge: 7*24*60*60*1000, 
+        httpOnly: true, 
+    }, 
+};
 
 
 // View engine setup
@@ -23,12 +35,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.json());
+app.use(session(sessionOptions));
+app.use(flash());
 
+
+// Root redirect
+app.get("/", (req, res)=> {
+    console.log("Server working fine");
+    res.redirect('/listings/allListings');
+});
+
+
+//flash message
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
 
 
 // Routes
 app.use('/listings', listingRoutes);
-app.use('/listings', reviewsRoutes); 
+app.use('/listings/:id/reviews', reviewsRoutes); 
 
 //connecting to db
 mongoose.connect(process.env.MONGODB_URI, {
@@ -55,11 +83,7 @@ process.on('SIGINT', async () => {
     }
 });
 
-// Root redirect
-app.get("/", (req, res)=> {
-    console.log("Server working fine");
-    res.redirect('/listings/allListings');
-});
+
 
 app.use((err, req, res, next) => {
     console.error("Error Details:", err); 

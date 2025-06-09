@@ -6,12 +6,16 @@ const app = express();
 const port = process.env.PORT || 8080;
 require('dotenv').config(); // Load environment variables
 const listingRoutes = require('./routes/listings');
-const ejsMate = require('ejs-mate');
-const wrapAsync = require('./utils/wrapAsync.js');
-const ExpressError = require('./utils/expressError.js');
 const reviewsRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/user');
+const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
+
+
 //seesion params
 const sessionOptions = { 
     secret: 'kEyisnotToBEESSharEd', 
@@ -37,7 +41,14 @@ app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(session(sessionOptions));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
+
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Root redirect
 app.get("/", (req, res)=> {
@@ -57,6 +68,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/listings', listingRoutes);
 app.use('/listings/:id/reviews', reviewsRoutes); 
+app.use('/', userRoutes);
 
 //connecting to db
 mongoose.connect(process.env.MONGODB_URI, {

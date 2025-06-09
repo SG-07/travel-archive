@@ -4,6 +4,7 @@ const Listing = require('../models/listing.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 const ExpressError = require('../utils/expressError.js');
 const listingSchema = require('../schemas/listingSchema');
+const isLoggedIn = require('../middleware.js');
 
 //ListingValidator function
 const listingValidator = (req, res, next) => {
@@ -20,12 +21,11 @@ const listingValidator = (req, res, next) => {
 // ✅ Index Route - Fetch all listings
 router.get('/allListings', wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
-    console.log(allListings);
     res.render('listings/index.ejs', { allListings });
 }));
 
 // ✅ New Route - Render form to create a new listing
-router.get('/new', wrapAsync(async (req, res) => {
+router.get('/new', isLoggedIn, wrapAsync(async (req, res) => {
     res.render('listings/new.ejs');
 }));
 
@@ -47,7 +47,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }));
 
 // ✅ Create Route - Save a new listing to the database
-router.post('/', listingValidator, wrapAsync(async (req, res) => {
+router.post('/', isLoggedIn, listingValidator, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     req.flash('success', 'New Listing Created!');
@@ -56,7 +56,7 @@ router.post('/', listingValidator, wrapAsync(async (req, res) => {
 }));
 
 // ✅ Edit Route - Render edit form for a listing
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     if (!listing) {
@@ -84,7 +84,7 @@ router.put('/:id', listingValidator, wrapAsync(async (req, res) => {
 }));
 
 // ✅ Delete Route - Remove a listing from the database
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     

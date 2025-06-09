@@ -9,7 +9,7 @@
     min-height: 80vh; /* Ensures enough space for footer */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start !important;
     
 }
 
@@ -36,7 +36,7 @@
 
 /* Footer Style */
 .f-info-links, 
-.f-info-socials,  /* Fixed typo */
+.f-info-socials, 
 .f-info-brand {
     width: 100%;
 }
@@ -123,4 +123,28 @@
 /* Alert */
 .alert {
   transition: opacity 0.5s ease-out;
+  margin-bottom: 0px !important;  
+  padding: 8px !important;
+}
+
+
+/* Review page rating */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 24px;
+    color: gray;
+    cursor: pointer;
+}
+
+.rating input:checked ~ label {
+    color: gold;
 }

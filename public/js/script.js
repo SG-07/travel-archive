@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       const alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
       alertInstance.close();
-    }, 8000); 
+    }, 3000); 
   }
 });
 

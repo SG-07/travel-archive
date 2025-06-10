@@ -26,6 +26,8 @@ process.on('SIGINT', async () => {
 const initDB = async () => {
     mongoose.connection.once('open', async () => {
         console.log("Connected to MongoDB, now adding listings...");
+        await Listing.deleteMany({});
+        initData.data = initData.data.map((obj) => ({...obj, owner: '6845869a01a30aeab568fdbf' }));
         await Listing.insertMany(initData.data);
         console.log("Listings addd successfully.");
     });

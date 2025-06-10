@@ -12,30 +12,28 @@
         <div class="card listing-card col-6 offset-3">
             <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
             <div class="card-body">
-                <p class="card-text"></p>
-                <%= listing.description %>
-                <br><br>
-                <strong>Price: </strong> 
-                <%= listing.price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) %>
-                <br><br>
-                <strong>Location: </strong>
-                <%= listing.location %>
-                <br><br>
-                <strong>Country: </strong>
-                <%= listing.country %>
+                <p class="card-text"> <strong>Owned by: </strong> <i><%= listing.owner.username %></i> </p>
+                <p class="card-text"> <%= listing.description %> </p>
+                <p class="card-text"> <strong>Price: </strong> <%= listing.price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) %> </p>
+                <p class="card-text"> <strong>Location: </strong> <%= listing.location %> </p>
+                <p class="card-text"> <strong>Country: </strong> <%= listing.country %> </p>
             </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="btn-show offset-3">
-            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary col-2 offset-1">Edit</a>
-            <button class="btn btn-outline-danger col-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-        </div>
+        <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+            <!-- Buttons -->
+            <div class="btn-show offset-3">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary col-2 offset-1">Edit</a>
+                <button class="btn btn-outline-danger col-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+            </div>
 
         <br>
+        <% } %>
 
-        <!-- Review Form -->
+        <!-- Review Form Section -->
+        <br>
         <div class="col-8 offset-3 mb-3">
+            <% if (currUser) { %>
             <hr/>
             <h4>Leave a Review</h4>
             <form method="POST" action="/listings/<%= listing._id %>/reviews" class="needs-validation" novalidate>
@@ -68,34 +66,46 @@
                 <br>
                 <button class="btn btn-outline-primary col-3 offset-3">Submit</button>
             </form>
-        </div>
+            <% } %>
+        
+        
 
-        <!-- Reviews Section -->
-        <hr/>
-        <% if (listing.reviews && listing.reviews.length > 0) { %>
-            <div class="col-10 offset-1">
-                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2 mb-3">
+            <!-- Reviews Section -->
+            <hr/>
+            <h3>All Reviews</h3>
+            <div class="row">
+                <% if (listing.reviews && listing.reviews.length > 0) { %>
                     <% for (review of listing.reviews) { %>
-                        <div class="col mb-3 mt-3">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Review Details</h5>
-                                    <p class="card-text">Comments: <%= review.comment %></p>
-                                    <p class="card-text"><%= review.rating %> stars</p>
+                        <div class="card col-5 ms-3 mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= review.author.username %></h5>
+                                <p class="card-text">Comments: <%= review.comment %></p>
+                                <!-- Dynamically display stars -->
+                                <p class="card-text">
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <% if (i <= review.rating) { %>
+                                            <span class="star" style="color: gold;">&#9733;</span>
+                                        <% } else { %>
+                                            <span class="star" style="color: gray;">&#9733;</span>
+                                        <% } %>
+                                    <% } %>
+                                </p>
+                                <% if (currUser && currUser._id.equals(review.author._id)) { %>
                                     <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                        
                                         <button class="btn btn-outline-danger">Delete</button>
                                     </form>
-                                </div>
-                            </div>
+                                <% } %>
+                            </div>    
                         </div>
                     <% } %>
-                </div>
-            </div>
-        <% } else { %>
-            <p class="offset-3 text-muted">No reviews yet. Be the first to review!</p>
-        <% } %>
+                <% } else { %>
+                    <p class="offset-3 text-muted">No reviews yet. Be the first to review!</p>
+                <% } %>
+            </div>    
+        </div>
     </div>     
-</div> <!-- ✅ Closing container -->
+</div> 
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

@@ -148,3 +148,9 @@
 .rating input:checked ~ label {
     color: gold;
 }
+
+
+/* Login Page */
+.signup {
+    text-decoration: none;
+}

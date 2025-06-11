@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Listing = require('../models/listing.js');
+// const Reviews = require('../models/reviews.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 const ExpressError = require('../utils/expressError.js');
 const { isLoggedIn, isOwner, listingValidator } = require('../middleware');  
@@ -65,10 +66,11 @@ router.put('/:id', listingValidator, isOwner, wrapAsync(async (req, res) => {
         throw new ExpressError(400, 'Send valid data for listing');
     }
 
-    const updatedListing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
 
     req.flash('success', 'Listing Updated!');
     res.redirect(`/listings/${id}`);
+    
 }));
 
 

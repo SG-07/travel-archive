@@ -27,6 +27,7 @@
                 <button class="btn btn-outline-danger col-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
             </div>
 
+
         <br>
         <% } %>
 
@@ -52,11 +53,7 @@
                         <input type="radio" id="star1" name="review[rating]" value="1">
                         <label for="star1" class="star">&#9733;</label>
                     </div>
-                </div>
-
-
-
-                <div class="mb-3 mt-3">
+                
                     <label for="comment" class="form-label">Comment</label>
                     <textarea id="comment" name="review[comment]" cols="20" rows="5" class="form-control" required
                         placeholder="Write your review here."></textarea>
@@ -79,7 +76,7 @@
                         <div class="card col-5 ms-3 mb-3">
                             <div class="card-body">
                                 <h5 class="card-title"><%= review.author.username %></h5>
-                                <p class="card-text">Comments: <%= review.comment %></p>
+                                <p class="card-text"><%= review.comment %></p>
                                 <!-- Dynamically display stars -->
                                 <p class="card-text">
                                     <% for(let i = 1; i <= 5; i++) { %>
@@ -92,7 +89,7 @@
                                 </p>
                                 <% if (currUser && currUser._id.equals(review.author._id)) { %>
                                     <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                        
+                                        <a href="/listings/<%= listing._id %>/reviews/<%= review._id %>" class="btn btn-outline-primary col-3 offset-1">Edit</a>
                                         <button class="btn btn-outline-danger">Delete</button>
                                     </form>
                                 <% } %>
@@ -101,6 +98,11 @@
                     <% } %>
                 <% } else { %>
                     <p class="offset-3 text-muted">No reviews yet. Be the first to review!</p>
+                <% } %>
+                
+                <% if (!currUser) { %>
+                    <br><br>
+                    <p>Login to add review</p>
                 <% } %>
             </div>    
         </div>

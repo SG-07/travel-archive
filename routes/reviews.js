@@ -26,6 +26,40 @@ router.post('/', isLoggedIn, validateReview, wrapAsync(async (req, res) => {
     res.redirect(`/listings/${listing._id}`);
 }));
 
+//Edit Route
+router.get('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+
+    const listing = await Listing.findById(id);
+    let review = await Review.findById(reviewId);
+
+    if(!review) {
+        req.flash('error', 'Some error occured. Contact support if happens again');
+        return res.redirect(`/listings/${listing._id}`);
+    }
+
+    res.render('reviews/edit.ejs', { listing, review });
+
+}));
+
+//Update Route
+router.put('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    let listing = await Listing.findById(id);
+    let review = await Review.findById(reviewId);
+
+    if(!review) {
+        req.flash('error', 'Failed to update comment. Contact Support!');
+        return res.redirect(`/listings/${listing._id}`);
+    }
+
+    await Review.findByIdAndUpdate(reviewId,  { ...req.body.review }, { new: true });
+
+    req.flash('success', 'Review Updated!');
+    res.redirect(`/listings/${id}`);
+
+}));
+
 //Delete Route
 router.delete('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;

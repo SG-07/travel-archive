@@ -1,6 +1,3 @@
-// import { inject } from "@vercel/analytics";
-// inject(); // ✅ Injects Vercel Analytics script into your app
-
 const express = require("express");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -103,5 +100,5 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message, statusCode });
 });
 
-// Export the Express app so Vercel can recognize it
+// Export Express app for Vercel deployment compatibility
 module.exports = app;

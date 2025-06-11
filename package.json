@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/SG-07/travel-archive#readme",
   "dependencies": {
-    "@vercel/analytics": "^1.5.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",

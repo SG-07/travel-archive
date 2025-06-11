@@ -24,6 +24,13 @@
     margin-bottom: 15px;
 }
 
+.navbar-collapse {
+  background-color: azure; /* or match your navbar bg */
+  z-index: 1000; /* keeps it on top */
+  width: 100%;  
+}
+
+
 .fa-mountain-sun {
     color: #fe424d;
     font-size: 2rem;
@@ -110,14 +117,14 @@
 }
 
 .card-img-overlay:hover {
-    opacity: 0.4;
+    opacity: 0.3;
     background-color: white;
 }
 
 
 /* Show Image */
 .show-img {
-    height: 30vh;
+    height: 60vh;
 }
 
 /* Alert */
@@ -149,16 +156,70 @@
     color: gold;
 }
 
-/* .edit-btn {
-  white-space: nowrap;
-  padding: 0.375rem 0.75rem; 
-  font-size: 1rem;
-  line-height: 1.5;
-  min-width: 80px
-} */
-
 
 /* Login Page */
 .signup {
     text-decoration: none;
 }
+
+
+/* Media Queries */
+@media (max-width: 576px) {
+    .row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .btn-show {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-show a,
+    .btn-show button {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+
+    .btn-outline-primary {
+        width: 100%;
+    }
+
+    /* Fix collapsed navbar pushing layout issue on small screens */
+      .navbar {
+    position: relative;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: 5rem; /* Adjust this if navbar height changes */
+    left: 0;
+    width: 100%;
+    background-color: azure;
+    z-index: 1000;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+
+.star-filled {
+  color: gold;
+}
+
+.star-empty {
+  color: #ccc;
+}
+
+
+
+
+

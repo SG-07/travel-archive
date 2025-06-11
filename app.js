@@ -1,3 +1,6 @@
+import { inject } from "@vercel/analytics";
+inject(); // ✅ Injects Vercel Analytics script into your app
+
 const express = require('express');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');

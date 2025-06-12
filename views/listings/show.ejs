@@ -64,7 +64,7 @@
           <label for="comment" class="form-label">Comment</label>
           <textarea name="review[comment]" id="comment" rows="3" class="form-control" required></textarea>
         </div>
-        <button type="submit" class="btn btn-outline-success">Submit Review</button>
+        <button type="submit" class="btn btn-outline-primary">Submit Review</button>
       </form>
     </div>
   </div>
@@ -107,15 +107,15 @@
     </div>
     <% } %>
     <% } else { %>
-      <p class="offset-3 text-muted">No reviews yet. Be the first to review!</p>
-                <% } %>
+      <p class="text-muted text-center">No reviews yet. Be the first to review!</p>
+    <% } %>
     
   </div>
   <div class="row justify-content-center g-4 mt-3">
     <div class="col-lg-5 col-md-6 col-sm-12">
       <% if (!currUser) { %>
     <br><br>
-    <p>Login to add review</p>
+    <p class="text-muted text-center">Login to add review</p>
     <% } %>
     </div>
     </div>

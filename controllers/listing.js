@@ -61,7 +61,7 @@ module.exports.updateListing = async (req, res) => {
     
 }
 
-module.exports.deleteListing = async (req, res) => {
+module.exports.destroyListing = async (req, res) => {
     const { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     

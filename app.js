@@ -97,6 +97,9 @@ process.on('SIGINT', async () => {
 });
 
 
+app.use((req, res, next) => {
+    next({ statusCode: 404, message: "Page Not Found" });
+});
 
 app.use((err, req, res, next) => {
     console.error("Error Details:", err); 

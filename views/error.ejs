@@ -6,19 +6,20 @@
   </symbol>
 </svg>
 
-<div class="row mt-5">
-    <div class="alert alert-danger d-flex flex-column align-items-center col-lg-8 col-md-10 col-sm-12" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" style="width: 20px; height: 20px;"> 
-            <use xlink:href="#exclamation-triangle-fill"/>
-        </svg>
-        <h4 class="fw-bold">Error <%= statusCode %></h4>
-        <h5 class="mt-2"><%= message %></h5>
-        <p class="text-center mt-3">Oops! Something went wrong. If this issue persists, please contact support.</p>
-    </div>
-    <div class="text-center mt-4">
-        <a href="/" class="btn btn-primary">Go Back Home</a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="alert alert-danger d-flex flex-column align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" style="width: 20px; height: 20px;"> 
+                    <use xlink:href="#exclamation-triangle-fill"/>
+                </svg>
+                <h4 class="fw-bold">Error <%= statusCode %></h4>
+                <h5 class="mt-2"><%= message %></h5>
+                <p class="text-center mt-3">Oops! Something went wrong. If this issue persists, please contact support.</p>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-primary">Go Back Home</a>
+            </div>
+        </div>
     </div>
 </div>
-
-
-

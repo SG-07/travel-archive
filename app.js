@@ -1,10 +1,10 @@
+require('dotenv').config(); // Load environment variables
 const express = require('express');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
-require('dotenv').config(); // Load environment variables
 const listingRoutes = require('./routes/listings');
 const reviewsRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/user');
@@ -36,6 +36,7 @@ app.engine('ejs', ejsMate);
 
 // Middleware setup
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.json());

@@ -1,5 +1,5 @@
 
-<nav class="navbar nav-underline navbar-expand-sm bg-body-light border-bottom sticky-top">
+<nav class="navbar nav-underline navbar-expand-sm bg-body-light border-bottom sticky-top navbar style="background-color: #e3f2fd" data-bs-theme="light">
   <div class="container-fluid">
     <!-- Brand Icon -->
     <a class="navbar-brand" href="/listings/allListings">
@@ -14,9 +14,17 @@
     <!-- Collapsible Menu -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" aria-current="page" href="/listings/allListings">Home</a>
+        <a class="nav-link" aria-current="page" href="/listings/allListings">Explore</a>
         <a class="nav-link" href="/listings/new">Add New Listing</a>
       </div>
+
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2 search-input" type="search" placeholder="Search destination"/>
+          <button class="btn btn-outline-primary btn-search" type="submit">Search</button>
+        </form>
+      </div>
+      
 
       <div class="navbar-nav ms-auto">
         <% if (!currUser) { %>

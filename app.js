@@ -10,6 +10,7 @@ const reviewsRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/user');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); 
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -17,8 +18,21 @@ const User = require('./models/user.js');
 
 
 //seesion params
+const store = MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    crypto: {
+        secret: 'asfasSFW2r*a34hWfa24441sfas'
+    },
+    touchAfter: 24*3600,
+});
+
+store.on('error', () => {
+    console.log("Error from Mongodb Side", err);
+});
+
 const sessionOptions = { 
-    secret: 'kEyisnotToBEESSharEd', 
+    store,
+    secret: process.env.SECRET, 
     resave: false, 
     saveUninitialized: true, 
     cookie: { 

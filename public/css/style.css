@@ -210,6 +210,11 @@ body {
     color: #ccc;
 }
 
+.prev-img {
+    width: 50vh;
+    height: 40vh;
+}
+
 /* Map */
 #map {
     width: 100%;

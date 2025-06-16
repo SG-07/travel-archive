@@ -120,3 +120,4 @@ app.use((err, req, res, next) => {
 
 // Export Express app for Vercel deployment compatibility
 module.exports = app;
+

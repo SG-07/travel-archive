@@ -10,6 +10,7 @@ const reviewsRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/user');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); 
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -17,8 +18,21 @@ const User = require('./models/user.js');
 
 
 //seesion params
+const store = MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    crypto: {
+        secret: 'asfasSFW2r*a34hWfa24441sfas'
+    },
+    touchAfter: 24*3600,
+});
+
+store.on('error', () => {
+    console.log("Error from Mongodb Side", err);
+});
+
 const sessionOptions = { 
-    secret: 'kEyisnotToBEESSharEd', 
+    store,
+    secret: process.env.SECRET, 
     resave: false, 
     saveUninitialized: true, 
     cookie: { 
@@ -28,11 +42,10 @@ const sessionOptions = {
     }, 
 };
 
-
 // View engine setup
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.engine('ejs', ejsMate);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
 
 // Middleware setup
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,49 +57,46 @@ app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate()));
-
-
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Root redirect
-app.get("/", (req, res)=> {
+app.get("/", (req, res) => {
     console.log("Server working fine");
-    res.redirect('/listings/allListings');
+    res.redirect("/listings/allListings");
 });
 
-
-//flash message
+// Flash message
 app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
     next();
 });
 
-
 // Routes
-app.use('/listings', listingRoutes);
-app.use('/listings/:id/reviews', reviewsRoutes); 
-app.use('/', userRoutes);
+app.use("/listings", listingRoutes);
+app.use("/listings/:id/reviews", reviewsRoutes);
+app.use("/", userRoutes);
 
-//connecting to db
-mongoose.connect(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 30000, // ✅ Allows MongoDB 30 sec to respond before timing out
-    socketTimeoutMS: 45000, // ✅ Ensures longer wait time before closing connection
-})
-  .then(() => {
-      console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
-  })
-  .catch(err => {
-      console.error("MongoDB connection error:", err);
-      process.exit(1); // ✅ Exits process on critical failure
-  });
+// Connecting to database
+mongoose
+    .connect(process.env.MONGODB_URI, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 45000,
+    })
+    .then(() => {
+        console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err);
+        process.exit(1); // ✅ Exits process on critical failure
+    });
 
-//disconneting from db
-process.on('SIGINT', async () => {
+// Disconnecting from database on exit
+process.on("SIGINT", async () => {
     try {
         await mongoose.connection.close();
         console.log("MongoDB connection closed.");
@@ -103,11 +113,11 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error("Error Details:", err); 
+    console.error("Error Details:", err);
     let { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).render('error.ejs', { message, statusCode }); 
+    res.status(statusCode).render("error.ejs", { message, statusCode });
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port: ${port}`);
-});
+// Export Express app for Vercel deployment compatibility
+module.exports = app;
+

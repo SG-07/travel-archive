@@ -1,24 +1,24 @@
 <% layout('/layout/boilerplate') %>
-<div class="row mt-3">
-    <h2 class="col-6 offset-3 mb-2">Login For Travel Archive</h2>
-    <div class="col-6 offset-3">
-        <form method="POST" action="/login" class="needs-validation" novalidate>
-            <div class="mb-3 mt-2">
-                <label for="username" class="form-label">Username</label>
-                <input name="username" id="username" class="form-control" placeholder="Enter your username" type="text" required>
-                <div class="invalid-feedback">Provide Username</div>
-            </div>
-            <div class="mb-3 mt-2">
-                <label for="password" class="form-label">Password</label>
-                <input name="password" id="password" class="form-control" placeholder="Enter your password" type="password" required>
-                <div class="invalid-feedback">Provide password</div>
-            </div>
-            <button class="btn btn-outline-primary">Login</button>
-            
 
-        </form>
-        <br><br>
-        <p>Don't have a account <a href="/signup" class="signup">Signup</a> now.</p>
-        
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
+            <h2 class="mb-4">Login to Travel Archive</h2>
+            <form method="POST" action="/login" class="needs-validation" novalidate>
+                <div class="mb-3 mt-2">
+                    <label for="username" class="form-label">Username</label>
+                    <input name="username" id="username" class="form-control" placeholder="Enter your username" type="text" required>
+                    <div class="invalid-feedback">Provide a valid username</div>
+                </div>
+                <div class="mb-3 mt-2">
+                    <label for="password" class="form-label">Password</label>
+                    <input name="password" id="password" class="form-control" placeholder="Enter your password" type="password" required>
+                    <div class="invalid-feedback">Provide your password</div>
+                </div>
+                <button class="btn btn-outline-primary ">Login</button>
+            </form>
+            <br>
+            <p class="text-center text-muted">Don't have an account? <a href="/signup" class="signup">Sign up</a> now.</p>
+        </div>
     </div>
 </div>

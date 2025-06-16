@@ -1,32 +1,45 @@
-const express = require("express");
-const methodOverride = require("method-override");
-const mongoose = require("mongoose");
-const path = require("path");
-require("dotenv").config(); // Load environment variables
-
-const listingRoutes = require("./routes/listings");
-const reviewsRoutes = require("./routes/reviews");
-const userRoutes = require("./routes/user");
-const ejsMate = require("ejs-mate");
-const session = require("express-session");
-const flash = require("connect-flash");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-const User = require("./models/user.js");
-
+require('dotenv').config(); // Load environment variables
+const express = require('express');
+const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
+const listingRoutes = require('./routes/listings');
+const reviewsRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/user');
+const ejsMate = require('ejs-mate');
+const session = require('express-session');
+const MongoStore = require('connect-mongo'); 
+const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
 
-// Session params
-const sessionOptions = {
-    secret: "kEyisnotToBEESSharEd",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        expiry: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
+
+//seesion params
+const store = MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    crypto: {
+        secret: 'asfasSFW2r*a34hWfa24441sfas'
     },
+    touchAfter: 24*3600,
+});
+
+store.on('error', () => {
+    console.log("Error from Mongodb Side", err);
+});
+
+const sessionOptions = { 
+    store,
+    secret: process.env.SECRET, 
+    resave: false, 
+    saveUninitialized: true, 
+    cookie: { 
+        expiry: Date.now() + 7*24*60*60*1000, 
+        maxAge: 7*24*60*60*1000, 
+        httpOnly: true, 
+    }, 
 };
 
 // View engine setup
@@ -35,9 +48,10 @@ app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
 // Middleware setup
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true}));
+app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(session(sessionOptions));
 app.use(flash());
@@ -93,7 +107,11 @@ process.on("SIGINT", async () => {
     }
 });
 
-// Global error handler
+
+app.use((req, res, next) => {
+    next({ statusCode: 404, message: "Page Not Found" });
+});
+
 app.use((err, req, res, next) => {
     console.error("Error Details:", err);
     let { statusCode = 500, message = "Something went wrong!" } = err;
@@ -102,3 +120,4 @@ app.use((err, req, res, next) => {
 
 // Export Express app for Vercel deployment compatibility
 module.exports = app;
+

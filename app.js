@@ -118,6 +118,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message, statusCode });
 });
 
-// Export Express app for Vercel deployment compatibility
-module.exports = app;
-
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});

@@ -24,6 +24,13 @@ module.exports.index = async (req, res) => {
     res.render('listings/index.ejs', { allListings });
 };
 
+module.exports.indexSearched = async (req, res) => {
+    const { id } = req.params;
+    console.log("Received ID:", id);
+    // const allListings = await Listing.find({});
+    // res.render('listings/index.ejs', { allListings });
+};
+
 module.exports.renderNewForm = async (req, res) => {
     res.render('listings/new.ejs');
 };
@@ -46,6 +53,8 @@ module.exports.showListing = async (req, res) => {
     console.log("Listing Retrieved:", listing);
     res.render('listings/show.ejs', { listing });
 };
+
+
 
 module.exports.createListing = async (req, res) => {
     const { location } = req.body.listing;

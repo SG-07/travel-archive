@@ -11,6 +11,9 @@ const upload = multer({ storage });
 //Index Route - Fetch all listings
 router.get('/allListings', wrapAsync(listingController.index));
 
+//Index Route - Fetch searched listings
+router.get('/allListings/:id', wrapAsync(listingController.indexSearched));
+
 //New Route - Render form to create a new listing
 router.get('/new', isLoggedIn, wrapAsync(listingController.renderNewForm));
 
